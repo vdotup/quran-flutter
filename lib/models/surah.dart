@@ -2,25 +2,38 @@ import 'package:flutter/foundation.dart';
 
 class Surah extends ChangeNotifier {
   final int id;
+  final LocalizedName name;
   final List<Verse> verses;
 
-  Surah({this.id, this.verses});
+  Surah({this.id, this.name, this.verses});
 
   factory Surah.fromJSON(Map map) {
-    var list = map['verses'] as List;
-    List<Verse> verses = list.map((i) => Verse.fromJSON(i)).toList();
+    var name = LocalizedName.fromJSON(map['name']);
+    var versesList = map['verses'] as List;
+    List<Verse> verses = versesList.map((i) => Verse.fromJSON(i)).toList();
 
-    return Surah(id: map['id'], verses: verses);
+    return Surah(id: map['id'], name: name, verses: verses);
+  }
+}
+
+class LocalizedName {
+  final String ar;
+
+  LocalizedName({this.ar});
+
+  factory LocalizedName.fromJSON(Map map) {
+    return LocalizedName(ar: map['ar']);
   }
 }
 
 class Verse {
   final int id;
-  final String verse;
+  final LocalizedName verse;
 
   Verse({this.id, this.verse});
 
   factory Verse.fromJSON(Map map) {
-    return Verse(id: map['id'], verse: map['verse']);
+    var verse = LocalizedName.fromJSON(map['verse']);
+    return Verse(id: map['id'], verse: verse);
   }
 }

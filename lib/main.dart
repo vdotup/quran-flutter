@@ -24,7 +24,7 @@ class App extends StatelessWidget {
       routes: {
         '/': (BuildContext context) => Home(),
       },
-      debugShowCheckedModeBanner: true,
+      debugShowCheckedModeBanner: false,
     );
   }
 }
@@ -66,30 +66,49 @@ class _HomeState extends State<Home> {
     return Scaffold(
       backgroundColor: Colors.black,
       body: SafeArea(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Expanded(child: SurahView(surahList()[currentSurah])),
-              Row(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  CupertinoButton(
-                      child: Icon(
-                        CupertinoIcons.arrowtriangle_left_circle,
-                        size: 50,
-                      ),
-                      onPressed: prev),
-                  Spacer(),
-                  CupertinoButton(
-                      child: Icon(
-                        CupertinoIcons.arrowtriangle_right_circle,
-                        size: 50,
-                      ),
-                      onPressed: next)
+                  Text((surahList()[currentSurah].id + 1).toString(),
+                      style: TextStyle(
+                          color: Colors.green, fontFamily: "UthamnicHafs")),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  Text(
+                    surahList()[currentSurah].name.ar,
+                    style: TextStyle(
+                        color: Colors.green,
+                        fontFamily: "UthamnicHafs",
+                        fontSize: 20),
+                  ),
                 ],
-              )
-            ],
-          ),
+              ),
+            ),
+            Expanded(child: SurahView(surahList()[currentSurah])),
+            Row(
+              children: [
+                CupertinoButton(
+                    child: Icon(
+                      CupertinoIcons.arrowtriangle_left_circle,
+                      size: 50,
+                    ),
+                    onPressed: prev),
+                Spacer(),
+                CupertinoButton(
+                    child: Icon(
+                      CupertinoIcons.arrowtriangle_right_circle,
+                      size: 50,
+                    ),
+                    onPressed: next)
+              ],
+            )
+          ],
         ),
       ),
     );
@@ -97,21 +116,29 @@ class _HomeState extends State<Home> {
 }
 
 class SurahView extends StatelessWidget {
-  Surah surah;
+  final Surah surah;
   SurahView(this.surah);
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: Expanded(child: ListView.builder(itemBuilder: (context, index) {
-        return Text(
-          surah.verses[index].verse,
-          maxLines: 400,
-          style: TextStyle(
-              color: Colors.green, fontFamily: "UthamnicHafs", fontSize: 20),
-        );
-      })),
-    );
+    return ListView.builder(
+        itemCount: surah.verses.length,
+        itemBuilder: (context, index) {
+          return Container(
+            child: Padding(
+              padding: const EdgeInsets.only(
+                  top: 10, left: 30, right: 10, bottom: 10),
+              child: Text(
+                surah.verses[index].verse.ar,
+                maxLines: 400,
+                textAlign: TextAlign.right,
+                style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: "UthamnicHafs",
+                    fontSize: 40),
+              ),
+            ),
+          );
+        });
   }
 }
