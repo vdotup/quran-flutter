@@ -119,6 +119,15 @@ class SurahView extends StatelessWidget {
   final Surah surah;
   SurahView(this.surah);
 
+  String arabicN(String input) {
+    const english = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+    const arabic = ["٠", "١", "٢", "٣", "٤", "٥", "٦", "٧", "٨", "٩"];
+    for (int i = 0; i < english.length; i++) {
+      input = input.replaceAll(english[i], arabic[i]);
+    }
+    return input;
+  }
+
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
@@ -129,7 +138,9 @@ class SurahView extends StatelessWidget {
               padding: const EdgeInsets.only(
                   top: 10, left: 30, right: 10, bottom: 10),
               child: Text(
-                surah.verses[index].verse.ar,
+                surah.verses[index].verse.ar +
+                    " " +
+                    arabicN((index + 1).toString()),
                 maxLines: 400,
                 textAlign: TextAlign.right,
                 style: TextStyle(
