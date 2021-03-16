@@ -1,8 +1,10 @@
+import 'package:arabic_numbers/arabic_numbers.dart';
 import 'package:quran/models/data.dart';
 import 'package:quran/models/surah.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
+import 'package:quran/tools.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,6 +38,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int currentSurah = 0;
+  double fontSize = 20;
 
   void prev() {
     if (currentSurah <= 0) {
@@ -90,7 +93,7 @@ class _HomeState extends State<Home> {
                 ],
               ),
             ),
-            Expanded(child: SurahView(surahList()[currentSurah])),
+            Expanded(child: surahView(surahList()[currentSurah])),
             Row(
               children: [
                 CupertinoButton(
@@ -99,6 +102,35 @@ class _HomeState extends State<Home> {
                       size: 50,
                     ),
                     onPressed: prev),
+                Spacer(),
+                CupertinoButton(
+                    child: Icon(
+                      CupertinoIcons.minus_circle_fill,
+                      size: 50,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        if (fontSize > 10) {
+                          fontSize -= 1;
+                        }
+                      });
+                    }),
+                Text(
+                  fontSize.toString(),
+                  style: TextStyle(color: Colors.white),
+                ),
+                CupertinoButton(
+                    child: Icon(
+                      CupertinoIcons.plus_circle_fill,
+                      size: 50,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        if (fontSize < 80) {
+                          fontSize += 1;
+                        }
+                      });
+                    }),
                 Spacer(),
                 CupertinoButton(
                     child: Icon(
@@ -113,23 +145,8 @@ class _HomeState extends State<Home> {
       ),
     );
   }
-}
 
-class SurahView extends StatelessWidget {
-  final Surah surah;
-  SurahView(this.surah);
-
-  String arabicN(String input) {
-    const english = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
-    const arabic = ["٠", "١", "٢", "٣", "٤", "٥", "٦", "٧", "٨", "٩"];
-    for (int i = 0; i < english.length; i++) {
-      input = input.replaceAll(english[i], arabic[i]);
-    }
-    return input;
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  ListView surahView(Surah surah) {
     return ListView.builder(
         itemCount: surah.verses.length,
         itemBuilder: (context, index) {
@@ -140,16 +157,46 @@ class SurahView extends StatelessWidget {
               child: Text(
                 surah.verses[index].verse.ar +
                     " " +
-                    arabicN((index + 1).toString()),
+                    Tools().numberConvert(index),
                 maxLines: 400,
                 textAlign: TextAlign.right,
                 style: TextStyle(
                     color: Colors.white,
                     fontFamily: "UthamnicHafs",
-                    fontSize: 40),
+                    fontSize: fontSize),
               ),
             ),
           );
         });
   }
 }
+
+// class SurahView extends StatelessWidget {
+//   final Surah surah;
+//   SurahView(this.surah);
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return ListView.builder(
+//         itemCount: surah.verses.length,
+//         itemBuilder: (context, index) {
+//           return Container(
+//             child: Padding(
+//               padding: const EdgeInsets.only(
+//                   top: 10, left: 30, right: 10, bottom: 10),
+//               child: Text(
+//                 surah.verses[index].verse.ar +
+//                     " " +
+//                     Tools().numberConvert(index),
+//                 maxLines: 400,
+//                 textAlign: TextAlign.right,
+//                 style: TextStyle(
+//                     color: Colors.white,
+//                     fontFamily: "UthamnicHafs",
+//                     fontSize: 40),
+//               ),
+//             ),
+//           );
+//         });
+//   }
+// }
