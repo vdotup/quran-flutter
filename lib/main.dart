@@ -146,6 +146,52 @@ class _HomeState extends State<Home> {
   }
 
   ListView surahView(Surah surah) {
+    Column ayah(int index) {
+      if (index == 0 && surah.id != 0 && surah.id != 8) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Text(
+              "بِسۡمِ ٱللَّهِ ٱلرَّحۡمَٰنِ ٱلرَّحِيمِ",
+              maxLines: 400,
+              textAlign: TextAlign.right,
+              style: TextStyle(
+                  color: Colors.white,
+                  fontFamily: "UthamnicHafs",
+                  fontSize: fontSize),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Text(
+              surah.verses[index].verse.ar + " " + Tools().numberConvert(index),
+              maxLines: 400,
+              textAlign: TextAlign.right,
+              style: TextStyle(
+                  color: Colors.white,
+                  fontFamily: "UthamnicHafs",
+                  fontSize: fontSize),
+            ),
+          ],
+        );
+      } else {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Text(
+              surah.verses[index].verse.ar + " " + Tools().numberConvert(index),
+              maxLines: 400,
+              textAlign: TextAlign.right,
+              style: TextStyle(
+                  color: Colors.white,
+                  fontFamily: "UthamnicHafs",
+                  fontSize: fontSize),
+            ),
+          ],
+        );
+      }
+    }
+
     return ListView.builder(
         itemCount: surah.verses.length,
         itemBuilder: (context, index) {
@@ -153,49 +199,9 @@ class _HomeState extends State<Home> {
             child: Padding(
               padding: const EdgeInsets.only(
                   top: 10, left: 30, right: 10, bottom: 10),
-              child: Text(
-                surah.verses[index].verse.ar +
-                    " " +
-                    Tools().numberConvert(index),
-                maxLines: 400,
-                textAlign: TextAlign.right,
-                style: TextStyle(
-                    color: Colors.white,
-                    fontFamily: "UthamnicHafs",
-                    fontSize: fontSize),
-              ),
+              child: ayah(index),
             ),
           );
         });
   }
 }
-
-// class SurahView extends StatelessWidget {
-//   final Surah surah;
-//   SurahView(this.surah);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return ListView.builder(
-//         itemCount: surah.verses.length,
-//         itemBuilder: (context, index) {
-//           return Container(
-//             child: Padding(
-//               padding: const EdgeInsets.only(
-//                   top: 10, left: 30, right: 10, bottom: 10),
-//               child: Text(
-//                 surah.verses[index].verse.ar +
-//                     " " +
-//                     Tools().numberConvert(index),
-//                 maxLines: 400,
-//                 textAlign: TextAlign.right,
-//                 style: TextStyle(
-//                     color: Colors.white,
-//                     fontFamily: "UthamnicHafs",
-//                     fontSize: 40),
-//               ),
-//             ),
-//           );
-//         });
-//   }
-// }
