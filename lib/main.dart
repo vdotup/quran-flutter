@@ -1,4 +1,3 @@
-import 'package:arabic_numbers/arabic_numbers.dart';
 import 'package:quran/models/data.dart';
 import 'package:quran/models/surah.dart';
 import 'package:flutter/material.dart';

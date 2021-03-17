@@ -23,7 +23,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  arabic_numbers: ^0.0.1
 
 
   # The following adds the Cupertino Icons font to your application.
